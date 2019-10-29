@@ -1,0 +1,9 @@
+/*
+ * Theme Name: Motley Fool
+ * Author: Adam Hundley
+*/
+
+.article-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
