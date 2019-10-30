@@ -1,13 +1,10 @@
 <?php
 /**
- * The main template file
- *
- * This is the most generic template file in a WordPress theme
- * and one of the two required files for a theme (the other being style.css).
- * It is used to display a page when nothing more specific matches a query.
- * E.g., it puts together the home page when no home.php file exists.
+ * The single article file
  *
  */
+require_once(__DIR__ . '/MotleyFool/Article.php');
+use MotleyFool\Article;
 
 get_header();
 ?>
@@ -15,28 +12,15 @@ get_header();
     <section id="primary" class="article-wrapper container-fluid">
       <?php
         global $post;
+        $article = new Article($post);
 
-        $article_type = '';
-        $article_type_terms = get_the_terms($post, 'article-type');
-        if (isset($article_type_terms[0])) {
-            $article_type = $article_type_terms[0]->slug;
-        }
+        $article_ticker = $article->getArticleTicker();
 
-        $article_ticker = '';
-        $article_ticker_terms = get_the_terms($post, 'article-ticker');
-        if (isset($article_ticker_terms[0])) {
-            $article_ticker = $article_ticker_terms[0]->slug;
-        }
-
-        $user = get_userdata($post->post_author);
-        $date = get_the_date('Y-m-d', $post);
-        $display_ticker = strtoupper($article_ticker);
-
-        echo "<h1>{$post->post_title} <a href='/company/$article_ticker/'>($display_ticker)</a></h1><hr />";
-        echo "<h5>{$date} - {$user->data->display_name}</h5><hr />";
+        echo "<h1>{$article->getTitle()} <a href='/company/$article_ticker/'>({$article->getDisplayTicker()})</a></h1><hr />";
+        echo "<h5>{$article->getDate()} - {$article->getUserDisplayName()}</h5><hr />";
 
         echo "<div class='row'>";
-        if ($article_type === 'stock-recommendations' && $article_ticker) {
+        if ($article->getArticleType() === 'stock-recommendations' && $article_ticker) {
             $api_url = "https://financialmodelingprep.com/api/v3/company/profile/{$article_ticker}";
             $response = wp_remote_get($api_url);
 
