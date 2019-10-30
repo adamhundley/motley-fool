@@ -101,9 +101,9 @@ class Company
         return $this->getProfile()->lastDiv ?: 'N/A';
     }
 
-    public function getRecommendations(): array
+    public function getArticles(string $type = ''): array
     {
-        $recommendations = [];
+        $article_objects = [];
         $articles = get_posts([
             'numberposts' => -1,
             'post_status' => 'publish',
@@ -113,7 +113,7 @@ class Company
                 [
                     'taxonomy' => 'article-type',
                     'field' => 'slug',
-                    'terms' => 'stock-recommendations',
+                    'terms' => $type,
                 ],
                 [
                     'taxonomy' => 'article-ticker',
@@ -124,38 +124,9 @@ class Company
         ]);
 
         foreach ($articles as $article) {
-            $recommendations[] = new Article($article);
+            $article_objects[] = new Article($article);
         }
 
-        return $recommendations;
-    }
-
-    public function getNews(): array
-    {
-        $news = [];
-        $articles = get_posts([
-            'numberposts' => -1,
-            'post_status' => 'publish',
-            'post_type' => [ 'article' ],
-            'orderby' => 'date',
-            'tax_query' => [
-                [
-                    'taxonomy' => 'article-type',
-                    'field' => 'slug',
-                    'terms' => 'news',
-                ],
-                [
-                    'taxonomy' => 'article-ticker',
-                    'field' => 'slug',
-                    'terms' => strtolower($this->getSymbol()),
-                ],
-            ],
-        ]);
-
-        foreach ($articles as $article) {
-            $news[] = new Article($article);
-        }
-
-        return $news;
+        return $article_objects;
     }
 }
