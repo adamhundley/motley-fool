@@ -42,6 +42,11 @@ class Article
         return strtoupper($this->getArticleTicker());
     }
 
+    public function getLink(): string
+    {
+        return get_permalink($this->post);
+    }
+
     public function getTitle(): string
     {
         return $this->post->post_title;
