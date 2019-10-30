@@ -51,7 +51,7 @@ get_header();
                   }
 
                   if ($news = $company->getArticles('news')) {
-                      echo "<h3>Recommendations</h3><hr />";
+                      echo "<h3>News</h3><hr />";
                       echo '<ul class="list-group">';
                       foreach ($news as $article) {
                           echo "<li class='list-group-item'><a href='{$article->getLink()}'>{$article->getTitle()} ({$article->getDisplayTicker()})</a></li>";
