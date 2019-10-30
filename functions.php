@@ -33,6 +33,8 @@ add_action('init', function () {
     'supports' => [ 'title', 'editor', 'revisions' ],
   ]);
 
+  wp_enqueue_style('bootstrap-styles', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
+
   register_taxonomy(
     'article-type',
     'article',
