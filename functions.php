@@ -41,7 +41,7 @@ add_action('init', function () {
         'hierarchical' => true,
         'show_ui' => false,
         'rewrite' => [
-          'slug' => 'articles',
+          'slug' => 'article',
         ],
     ]
   );
