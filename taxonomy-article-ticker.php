@@ -16,6 +16,7 @@ use MotleyFool\Company;
 use MotleyFool\FinancialModelingApi;
 
 get_header();
+
 ?>
   <main id="main" class="site-main">
     <section id="primary" class="article-wrapper container-fluid">
@@ -51,7 +52,7 @@ get_header();
                   }
 
                   if ($news = $company->getArticles('news')) {
-                      echo "<h3>News</h3><hr />";
+                      echo "<br /><br /><h3>Other Coverage</h3><hr />";
                       echo '<ul class="list-group">';
                       foreach ($news as $article) {
                           echo "<li class='list-group-item'><a href='{$article->getLink()}'>{$article->getTitle()} ({$article->getDisplayTicker()})</a></li>";
@@ -66,4 +67,5 @@ get_header();
     </section>
   </main>
 <?php
+
 get_footer();
