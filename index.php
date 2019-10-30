@@ -13,6 +13,7 @@ get_header();
     <main id="main" class="article-wrapper container-fluid">
       <div class="col">
         <h1>All Articles</h1>
+        <ul class="list-group">
         <?php
           $posts = get_posts([
               'numberposts' => -1,
@@ -26,6 +27,7 @@ get_header();
               echo "<li class='list-group-item'><a href='{$article->getLink()}'>{$article->getTitle()} ({$article->getDisplayTicker()})</a></li>";
           }
         ?>
+        </ul>
       </div>
     </main>
   </section>
