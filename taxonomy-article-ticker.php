@@ -6,7 +6,9 @@
  *
  */
 
+require_once(__DIR__ . '/MotleyFool/Article.php');
 require_once(__DIR__ . '/MotleyFool/Company.php');
+use MotleyFool\Article;
 use MotleyFool\Company;
 
 get_header();
@@ -52,36 +54,11 @@ get_header();
                       echo "</ul>";
                   }
 
-                  $news = get_posts([
-                    'numberposts' => -1,
-                    'post_status' => 'publish',
-                    'post_type' => [ 'article' ],
-                    'orderby' => 'date',
-                    'tax_query' => [
-                        [
-                            'taxonomy' => 'article-type',
-                            'field' => 'slug',
-                            'terms' => 'news',
-                        ],
-                        [
-                            'taxonomy' => 'article-ticker',
-                            'field' => 'slug',
-                            'terms' => $term->slug,
-                        ],
-                    ],
-                  ]);
-
-                  if ($news) {
-                      echo "<h3>News</h3><hr />";
+                  if ($news = $company->getNews()) {
+                      echo "<h3>Recommendations</h3><hr />";
                       echo '<ul class="list-group">';
                       foreach ($news as $article) {
-                          $url = get_permalink($article);
-                          $article_ticker = '';
-                          $article_ticker_terms = get_the_terms($article, 'article-ticker');
-                          if (isset($article_ticker_terms[0])) {
-                              $article_ticker = strtoupper($article_ticker_terms[0]->name);
-                          }
-                          echo "<li class='list-group-item'><a href='{$url}'>{$article->post_title} ({$article_ticker})</a></li>";
+                          echo "<li class='list-group-item'><a href='{$article->getLink()}'>{$article->getTitle()} ({$article->getDisplayTicker()})</a></li>";
                       }
                       echo "</ul>";
                   }

@@ -129,4 +129,33 @@ class Company
 
         return $recommendations;
     }
+
+    public function getNews(): array
+    {
+        $news = [];
+        $articles = get_posts([
+            'numberposts' => -1,
+            'post_status' => 'publish',
+            'post_type' => [ 'article' ],
+            'orderby' => 'date',
+            'tax_query' => [
+                [
+                    'taxonomy' => 'article-type',
+                    'field' => 'slug',
+                    'terms' => 'news',
+                ],
+                [
+                    'taxonomy' => 'article-ticker',
+                    'field' => 'slug',
+                    'terms' => strtolower($this->getSymbol()),
+                ],
+            ],
+        ]);
+
+        foreach ($articles as $article) {
+            $news[] = new Article($article);
+        }
+
+        return $news;
+    }
 }
