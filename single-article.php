@@ -11,8 +11,8 @@
 
 get_header();
 ?>
-  <main id="main" class="site-main">
-    <section id="primary" class="article">
+  <main id="main" class="site-main ">
+    <section id="primary" class="article-wrapper container-fluid">
       <?php
         global $post;
 
@@ -27,12 +27,15 @@ get_header();
         if (isset($article_ticker_terms[0])) {
             $article_ticker = $article_ticker_terms[0]->slug;
         }
-        echo $post->post_title;
-        echo get_the_date('Y-m-d', $post);
-        echo $article_ticker;
+
         $user = get_userdata($post->post_author);
-        echo $user->data->display_name;
-        echo $post->post_content;
+        $date = get_the_date('Y-m-d', $post);
+        $display_ticker = strtoupper($article_ticker);
+
+        echo "<h1>{$post->post_title} ($display_ticker)</h1><hr />";
+        echo "<h5>{$date} - {$user->data->display_name}</h5><hr />";
+
+        echo "<div class='row'>";
         if ($article_type === 'stock-recommendations' && $article_ticker) {
             $api_url = "https://financialmodelingprep.com/api/v3/company/profile/{$article_ticker}";
             $response = wp_remote_get($api_url);
@@ -45,16 +48,21 @@ get_header();
             }
 
             if ($company->profile) {
-                echo $company->profile->image;
-                echo $company->profile->companyName;
-                echo $company->profile->exchange;
-                echo $company->profile->description;
-                echo $company->profile->industry;
-                echo $company->profile->sector;
-                echo $company->profile->ceo;
-                echo $company->profile->website;
+                echo "<nav class='col-sm-3 p-4 col bg-light'>";
+
+                echo "<div class='text-center'><img src='{$company->profile->image}' class='img-thumbnail rounded' alt='{$company->profile->companyName} Logo' /><hr /></div>";
+                echo "<h4>{$company->profile->companyName}</h4>";
+                echo "<h5>{$company->symbol} - {$company->profile->exchange}</h5>";
+                echo "<p>{$company->profile->description}</p>";
+                echo "<h6>Industry - {$company->profile->industry}</h6>";
+                echo "<h6>Sector - {$company->profile->sector}</h6>";
+                echo "<h6>CEO - {$company->profile->ceo}</h6>";
+                echo "<a href='{$company->profile->website}' target='_blank'>Visit Website</a>";
+                echo "</nav>";
             }
         }
+        echo "<div class='col-sm-9 p-4 col'>{$post->post_content}</div>";
+        echo "</div>";
       ?>
     </section>
   </main>
