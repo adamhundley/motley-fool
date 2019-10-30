@@ -61,4 +61,9 @@ class Article
     {
         return $this->getUser()->data->display_name;
     }
+
+    public function getContent()
+    {
+        return $this->post->post_content;
+    }
 }

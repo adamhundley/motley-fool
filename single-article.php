@@ -44,7 +44,7 @@ get_header();
                 echo "</nav>";
             }
         }
-        echo "<div class='col-sm-9 p-4 col'>{$post->post_content}</div>";
+        echo "<div class='col-sm-9 p-4 col'>{$article->getContent()}</div>";
         echo "</div>";
       ?>
     </section>
