@@ -6,6 +6,9 @@
  *
  */
 
+require_once(__DIR__ . '/MotleyFool/Company.php');
+use MotleyFool\Company;
+
 get_header();
 ?>
   <main id="main" class="site-main">
@@ -24,40 +27,21 @@ get_header();
                   throw new Exception("");
               }
 
-              if ($company->profile) {
-                  $last_dividend = $company->profile->lastDiv ?: 'N/A';
+              if ($company) {
+                  $company = new Company($company);
                   echo "<nav class='col-sm-3 p-4 col bg-light'>";
-                  echo "<h4>{$company->symbol}({$company->profile->exchange})</h4>";
-                  echo "<h6>Price - {$company->profile->price}</h6>";
-                  echo "<h6>Changes - {$company->profile->changes} {$company->profile->changesPercentage}</h5>";
-                  echo "<h6>Beta - {$company->profile->beta}</h6>";
-                  echo "<h6>Volume Average - {$company->profile->volAvg}</h6>";
-                  echo "<h6>Market Capitalization - {$company->profile->mktCap}</h6>";
-                  echo "<h6>Last Dividend - {$last_dividend}</h6>";
+                  echo "<h4>{$company->getSymbol()}({$company->getExchange()})</h4>";
+                  echo "<h6>Price - {$company->getPrice()}</h6>";
+                  echo "<h6>Changes - {$company->getChanges()}</h5>";
+                  echo "<h6>Beta - {$company->getBeta()}</h6>";
+                  echo "<h6>Volume Average - {$company->getVolAvg()}</h6>";
+                  echo "<h6>Market Capitalization - {$company->getMktCap()}</h6>";
+                  echo "<h6>Last Dividend - {$company->getLastDividend()}</h6>";
                   echo "</nav>";
 
-                  echo "<div class='col-sm-9 p-4 col'><img src='{$company->profile->image}' class='img-thumbnail rounded' alt='{$company->profile->companyName} Logo' />";
-                  echo "<h1>{$company->profile->companyName} Articles</h1><hr />";
-                  echo "<p>{$company->profile->description}</p>";
-
-                  $recommendations = get_posts([
-                  'numberposts' => -1,
-                  'post_status' => 'publish',
-                  'post_type' => [ 'article' ],
-                  'orderby' => 'date',
-                  'tax_query' => [
-                      [
-                          'taxonomy' => 'article-type',
-                          'field' => 'slug',
-                          'terms' => 'stock-recommendations',
-                      ],
-                      [
-                          'taxonomy' => 'article-ticker',
-                          'field' => 'slug',
-                          'terms' => $term->slug,
-                      ],
-                  ],
-                ]);
+                  echo "<div class='col-sm-9 p-4 col'><img src='{$company->getLogo()}' class='img-thumbnail rounded' alt='{$company->getName()} Logo' />";
+                  echo "<h1>{$company->getName()} Articles</h1><hr />";
+                  echo "<p>{$company->getDescription()}</p>";
 
                   if ($recommendations) {
                       echo "<h3>Recommendations</h3><hr />";
