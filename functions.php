@@ -47,6 +47,9 @@ add_action('init', function () {
         'show_in_quick_edit' => true,
     ]
   );
+
+  wp_insert_term('News', 'article-type');
+  wp_insert_term('Stock Recommendations', 'article-type');
 });
 
 function article_ticker_box_html($post)
