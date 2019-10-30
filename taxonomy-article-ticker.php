@@ -26,15 +26,7 @@ get_header();
               $ticker = new ArticleTicker($term);
               $api = new FinancialModelingApi($ticker->getSlug());
 
-              $company_response_code = wp_remote_retrieve_response_code($company_response);
-              if ($company_response_code === 200) {
-                  $company = json_decode(wp_remote_retrieve_body($company_response));
-              } else {
-                  throw new Exception("");
-              }
-
-              if ($company) {
-                  $company = new Company($company);
+              if ($company = $api->getCompany()) {
                   echo "<nav class='col-sm-3 p-4 col bg-light'>";
                   echo "<h4>{$company->getSymbol()}({$company->getExchange()})</h4>";
                   echo "<h6>Price - {$company->getPrice()}</h6>";
