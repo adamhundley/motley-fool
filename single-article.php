@@ -32,7 +32,7 @@ get_header();
         $date = get_the_date('Y-m-d', $post);
         $display_ticker = strtoupper($article_ticker);
 
-        echo "<h1>{$post->post_title} ($display_ticker)</h1><hr />";
+        echo "<h1>{$post->post_title} <a href='/company/$article_ticker/'>($display_ticker)</a></h1><hr />";
         echo "<h5>{$date} - {$user->data->display_name}</h5><hr />";
 
         echo "<div class='row'>";
@@ -49,10 +49,9 @@ get_header();
 
             if ($company->profile) {
                 echo "<nav class='col-sm-3 p-4 col bg-light'>";
-
                 echo "<div class='text-center'><img src='{$company->profile->image}' class='img-thumbnail rounded' alt='{$company->profile->companyName} Logo' /><hr /></div>";
-                echo "<h4>{$company->profile->companyName}</h4>";
-                echo "<h5>{$company->symbol} - {$company->profile->exchange}</h5>";
+                echo "<h4><a href='/company/$article_ticker/'>{$company->profile->companyName}</a></h4>";
+                echo "<h5><a href='/company/$article_ticker/'>{$company->symbol}({$company->profile->exchange})</a></h5>";
                 echo "<p>{$company->profile->description}</p>";
                 echo "<h6>Industry - {$company->profile->industry}</h6>";
                 echo "<h6>Sector - {$company->profile->sector}</h6>";
