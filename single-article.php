@@ -4,7 +4,9 @@
  *
  */
 require_once(__DIR__ . '/MotleyFool/Article.php');
+require_once(__DIR__ . '/MotleyFool/Company.php');
 use MotleyFool\Article;
+use MotleyFool\Company;
 
 get_header();
 ?>
@@ -31,16 +33,17 @@ get_header();
                 throw new Exception("");
             }
 
-            if ($company->profile) {
+            if ($company) {
+                $company = new Company($company);
                 echo "<nav class='col-sm-3 p-4 col bg-light'>";
-                echo "<div class='text-center'><img src='{$company->profile->image}' class='img-thumbnail rounded' alt='{$company->profile->companyName} Logo' /><hr /></div>";
-                echo "<h4><a href='/company/$article_ticker/'>{$company->profile->companyName}</a></h4>";
-                echo "<h5><a href='/company/$article_ticker/'>{$company->symbol}({$company->profile->exchange})</a></h5>";
-                echo "<p>{$company->profile->description}</p>";
-                echo "<h6>Industry - {$company->profile->industry}</h6>";
-                echo "<h6>Sector - {$company->profile->sector}</h6>";
-                echo "<h6>CEO - {$company->profile->ceo}</h6>";
-                echo "<a href='{$company->profile->website}' target='_blank'>Visit Website</a>";
+                echo "<div class='text-center'><img src='{$company->getLogo()}' class='img-thumbnail rounded' alt='{$company->getName()} Logo' /><hr /></div>";
+                echo "<h4><a href='{$company->getSlug()}'>{$company->getName()}</a></h4>";
+                echo "<h5><a href='{$company->getSlug()}'>{$company->getSymbol()}({$company->getExchange()})</a></h5>";
+                echo "<p>{$company->getDescription()}</p>";
+                echo "<h6>Industry - {$company->getIndustry()}</h6>";
+                echo "<h6>Sector - {$company->getSector()}</h6>";
+                echo "<h6>CEO - {$company->getCeo()}</h6>";
+                echo "<a href='{$company->getWebsite()}' target='_blank'>Visit Website</a>";
                 echo "</nav>";
             }
         }
