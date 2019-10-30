@@ -7,9 +7,13 @@
  */
 
 require_once(__DIR__ . '/MotleyFool/Article.php');
+require_once(__DIR__ . '/MotleyFool/ArticleTicker.php');
 require_once(__DIR__ . '/MotleyFool/Company.php');
+require_once(__DIR__ . '/MotleyFool/FinancialModelingApi.php');
 use MotleyFool\Article;
+use MotleyFool\ArticleTicker;
 use MotleyFool\Company;
+use MotleyFool\FinancialModelingApi;
 
 get_header();
 ?>
@@ -19,8 +23,8 @@ get_header();
         <?php
           $term = get_queried_object();
           if ($term) {
-              $company_url = "https://financialmodelingprep.com/api/v3/company/profile/{$term->slug}";
-              $company_response = wp_remote_get($company_url);
+              $ticker = new ArticleTicker($term);
+              $api = new FinancialModelingApi($ticker->getSlug());
 
               $company_response_code = wp_remote_retrieve_response_code($company_response);
               if ($company_response_code === 200) {
