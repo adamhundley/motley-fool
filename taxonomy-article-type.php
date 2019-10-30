@@ -9,6 +9,11 @@
  *
  */
 
+require_once(__DIR__ . '/MotleyFool/Article.php');
+require_once(__DIR__ . '/MotleyFool/ArticleType.php');
+use MotleyFool\Article;
+use MotleyFool\ArticleType;
+
 get_header();
 ?>
   <main id="main" class="site-main">
@@ -18,31 +23,15 @@ get_header();
           <?php
             $term = get_queried_object();
 
-            $articles = get_posts([
-              'numberposts' => 10,
-              'post_status' => 'publish',
-              'post_type' => [ 'article' ],
-              'orderby' => 'date',
-              'tax_query' => [
-                  [
-                      'taxonomy' => 'article-type',
-                      'field' => 'slug',
-                      'terms' => $term->slug,
-                  ],
-              ],
-            ]);
-            echo "<h1>{$term->name} Articles</h1><hr />";
-            echo '<ul class="list-group">';
-            foreach ($articles as $article) {
-                $url = get_permalink($article);
-                $article_ticker = '';
-                $article_ticker_terms = get_the_terms($article, 'article-ticker');
-                if (isset($article_ticker_terms[0])) {
-                    $article_ticker = strtoupper($article_ticker_terms[0]->name);
+            if ($term) {
+                $article_type = new ArticleType($term);
+                echo "<h1>{$article_type->getName()} Articles</h1><hr />";
+                echo '<ul class="list-group">';
+                foreach ($article_type->getArticles() as $article) {
+                    echo "<li class='list-group-item'><a href='{$article->getLink()}'>{$article->getTitle()} ({$article->getDisplayTicker()})</a></li>";
                 }
-                echo "<li class='list-group-item'><a href='{$url}'>{$article->post_title} ({$article_ticker})</a></li>";
+                echo "</ul>";
             }
-            echo "</ul>";
           ?>
         </div>
       </div>
