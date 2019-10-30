@@ -43,8 +43,19 @@ add_action('init', function () {
         'rewrite' => [
           'slug' => 'articles',
         ],
-        'show_admin_column' => true,
-        'show_in_quick_edit' => true,
+    ]
+  );
+
+  register_taxonomy(
+    'article-ticker',
+    'article',
+    [
+        'label' => 'Article Ticker',
+        'hierarchical' => true,
+        'show_ui' => false,
+        'rewrite' => [
+          'slug' => 'articles',
+        ],
     ]
   );
 
@@ -64,14 +75,18 @@ function article_ticker_box_html($post)
         throw new Exception("");
     }
 
-    $selected_ticker = get_post_meta($post->ID, 'article_ticker', true);
+    $term_slug = '';
+    $terms = get_the_terms($post, 'article-ticker');
+    if (isset($terms[0])) {
+        $term_slug = $terms[0]->slug;
+    }
     ?>
         <select name="article_ticker" id="article_ticker" class="postbox">
             <?
                 foreach ($tickers as $ticker) {
                     $symbol = $ticker->symbol;
                     $value = strtolower($ticker->symbol);
-                    $selected = $value === $selected_ticker ? 'selected' : '';
+                    $selected = $value === $term_slug ? 'selected' : '';
                     echo "<option value='{$value}' {$selected}>{$symbol} ({$ticker->name})</option>";
                 }
             ?>
@@ -125,20 +140,30 @@ function article_term_selectors()
 
 function save_article_terms($post_id)
 {
-    if (isset($_POST['article_ticker'])) {
-        update_post_meta(
-            $post_id,
-            'article_ticker',
-            $_POST['article_ticker']
+    $article_ticker = $_POST['article_ticker'] ?? '';
+    $article_type = $_POST['article_type'] ?? '';
+
+    if ($article_ticker) {
+      $term = get_term_by('slug', $article_ticker);
+      if (!$term) {
+        wp_insert_term($article_ticker, 'article-ticker');
+        wp_set_object_terms(
+          $post_id,
+          $article_ticker,
+          'article-ticker',
         );
+      }
     }
 
-    if (isset($_POST['article_type'])) {
-      wp_set_object_terms(
-        (int) $post_id,
-        $_POST['article_type'],
-        'article-type',
-      );
+    if ($article_type) {
+      $term = get_term_by('slug', $article_ticker);
+      if (!$term) {
+        wp_set_object_terms(
+          $post_id,
+          $article_type,
+          'article-type',
+        );
+      }
     }
 }
 
