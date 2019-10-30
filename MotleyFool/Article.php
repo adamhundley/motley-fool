@@ -8,7 +8,7 @@ class Article
     /**
      * @var stdClass
      */
-    private $data;
+    private $article;
 
     public function __construct($post)
     {

@@ -9,7 +9,7 @@ class Company
     /**
      * @var stdClass
      */
-    private $data;
+    private $company;
 
     public function __construct($company)
     {

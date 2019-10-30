@@ -5,8 +5,10 @@
  */
 require_once(__DIR__ . '/MotleyFool/Article.php');
 require_once(__DIR__ . '/MotleyFool/Company.php');
+require_once(__DIR__ . '/MotleyFool/FinancialModelingApi.php');
 use MotleyFool\Article;
 use MotleyFool\Company;
+use MotleyFool\FinancialModelingApi;
 
 get_header();
 ?>
@@ -23,18 +25,8 @@ get_header();
 
         echo "<div class='row'>";
         if ($article->getArticleType() === 'stock-recommendations' && $article_ticker) {
-            $api_url = "https://financialmodelingprep.com/api/v3/company/profile/{$article_ticker}";
-            $response = wp_remote_get($api_url);
-
-            $response_code = wp_remote_retrieve_response_code($response);
-            if ($response_code === 200) {
-                $company = json_decode(wp_remote_retrieve_body($response));
-            } else {
-                throw new Exception("");
-            }
-
-            if ($company) {
-                $company = new Company($company);
+            $api = new FinancialModelingApi($article_ticker);
+            if ($company = $api->getCompany()) {
                 echo "<nav class='col-sm-3 p-4 col bg-light'>";
                 echo "<div class='text-center'><img src='{$company->getLogo()}' class='img-thumbnail rounded' alt='{$company->getName()} Logo' /><hr /></div>";
                 echo "<h4><a href='{$company->getSlug()}'>{$company->getName()}</a></h4>";
