@@ -38,7 +38,8 @@ class Company
 
     public function getSlug(): string
     {
-        return "/company/{$this->getSymbol()}/";
+        $symbol = strtolower($this->getSymbol());
+        return "/company/{$symbol}/";
     }
 
     public function getExchange(): string
