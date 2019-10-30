@@ -27,7 +27,7 @@ add_action('init', function () {
       'with_front' => false,
       'pages' => false,
       'feed' => false,
-      'slug' => 'articles'
+      'slug' => 'article'
     ],
     'capability_type' => 'page',
     'supports' => [ 'title', 'editor', 'revisions' ],
@@ -43,7 +43,7 @@ add_action('init', function () {
         'hierarchical' => true,
         'show_ui' => false,
         'rewrite' => [
-          'slug' => 'article',
+          'slug' => 'articles',
         ],
     ]
   );
