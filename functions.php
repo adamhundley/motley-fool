@@ -32,6 +32,21 @@ add_action('init', function () {
     'capability_type' => 'page',
     'supports' => [ 'title', 'editor', 'revisions' ],
   ]);
+
+  register_taxonomy(
+    'article-type',
+    'article',
+    [
+        'label' => 'Article Type',
+        'hierarchical' => true,
+        'show_ui' => true,
+        'rewrite' => [
+          'slug' => 'articles',
+        ],
+        'show_admin_column' => true,
+        'show_in_quick_edit' => true,
+    ]
+  );
 });
 
 function article_ticker_box_html($post)
