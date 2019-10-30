@@ -14,28 +14,37 @@ get_header();
   <main id="main" class="site-main">
     <section id="primary" class="article-wrapper container-fluid">
       <div class="row">
-        <?php
-          $articles = get_posts([
-            'numberposts' => 10,
-            'post_status' => 'publish',
-            'post_type' => [ 'article' ],
-            'orderby' => 'date',
-            'tax_query' => [
-                [
-                    'taxonomy' => 'article-type',
-                    'field' => 'slug',
-                    'terms' => 'stock-recommendations',
-                ],
-            ],
-          ]);
+        <div class="col">
+          <?php
+            $term = get_queried_object();
 
-          echo '<ul class="list-group">';
-          foreach ($articles as $article) {
-              $url = get_permalink($article);
-              echo "<li class='list-group-item'><a href='{$url}'>{$article->post_title}</a></li>";
-          }
-          echo "</ul>";
-        ?>
+            $articles = get_posts([
+              'numberposts' => 10,
+              'post_status' => 'publish',
+              'post_type' => [ 'article' ],
+              'orderby' => 'date',
+              'tax_query' => [
+                  [
+                      'taxonomy' => 'article-type',
+                      'field' => 'slug',
+                      'terms' => $term->slug,
+                  ],
+              ],
+            ]);
+            echo "<h1>{$term->name} Articles</h1><hr />";
+            echo '<ul class="list-group">';
+            foreach ($articles as $article) {
+                $url = get_permalink($article);
+                $article_ticker = '';
+                $article_ticker_terms = get_the_terms($article, 'article-ticker');
+                if (isset($article_ticker_terms[0])) {
+                    $article_ticker = strtoupper($article_ticker_terms[0]->name);
+                }
+                echo "<li class='list-group-item'><a href='{$url}'>{$article->post_title} ({$article_ticker})</a></li>";
+            }
+            echo "</ul>";
+          ?>
+        </div>
       </div>
     </section>
   </main>
