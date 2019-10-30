@@ -34,7 +34,7 @@
 <div id="header" role="banner">
   <div id="headerimg">
     <header><nav class="nav align-items-center">
-      <a class="nav-link" href="/articles/"><img class="logo" src="https://www.f5.com/content/dam/f5-com/page-assets-en/home-en/customers/case-studies/TMF%20logo%20-%20proposed.png" alt="Logo" /></a>
+      <a class="nav-link" href="/"><img class="logo" src="https://www.f5.com/content/dam/f5-com/page-assets-en/home-en/customers/case-studies/TMF%20logo%20-%20proposed.png" alt="Logo" /></a>
       <a class="nav-link" href="/articles/news/">News</a>
       <a class="nav-link" href="/articles/stock-recommendations/">Stock Recommendations</a>
     </nav></header>
