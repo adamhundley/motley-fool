@@ -39,7 +39,7 @@ add_action('init', function () {
     [
         'label' => 'Article Type',
         'hierarchical' => true,
-        'show_ui' => true,
+        'show_ui' => false,
         'rewrite' => [
           'slug' => 'articles',
         ],
@@ -76,7 +76,32 @@ function article_ticker_box_html($post)
     <?
 }
 
-function article_ticker_box()
+function article_type_box_html($post)
+{
+    $types = get_terms([
+        'taxonomy' => 'article-type',
+        'hide_empty' => false,
+    ]);
+
+    $term_slug = '';
+    $terms = get_the_terms($post, 'article-type');
+    if (isset($terms[0])) {
+        $term_slug = $terms[0]->slug;
+    }
+
+    ?>
+        <select name="article_type" id="article_ticker" class="postbox">
+            <?
+                foreach ($types as $type) {
+                    $selected = $type->slug === $term_slug ? 'selected' : '';
+                    echo "<option value='{$type->slug}' {$selected}>{$type->name}</option>";
+                }
+            ?>
+        </select>
+    <?
+}
+
+function article_term_selectors()
 {
     add_meta_box(
         'article_ticker',
@@ -85,10 +110,17 @@ function article_ticker_box()
         'article',
         'side'
     );
-}
-add_action('add_meta_boxes', 'article_ticker_box');
 
-function save_article_ticker($post_id)
+    add_meta_box(
+        'article_type',
+        'Article Type',
+        'article_type_box_html',
+        'article',
+        'side'
+    );
+}
+
+function save_article_terms($post_id)
 {
     if (isset($_POST['article_ticker'])) {
         update_post_meta(
@@ -97,5 +129,15 @@ function save_article_ticker($post_id)
             $_POST['article_ticker']
         );
     }
+
+    if (isset($_POST['article_type'])) {
+      wp_set_object_terms(
+        (int) $post_id,
+        $_POST['article_type'],
+        'article-type',
+      );
+    }
 }
-add_action('save_post', 'save_article_ticker');
+
+add_action('save_post', 'save_article_terms');
+add_action('add_meta_boxes', 'article_term_selectors');
