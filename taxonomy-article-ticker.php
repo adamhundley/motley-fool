@@ -42,7 +42,7 @@ get_header();
                   echo "<h1>{$company->getName()} Articles</h1><hr />";
                   echo "<p>{$company->getDescription()}</p>";
 
-                  if ($recommendations = $company->getRecommendations()) {
+                  if ($recommendations = $company->getArticles('stock-recommendations')) {
                       echo "<h3>Recommendations</h3><hr />";
                       echo '<ul class="list-group">';
                       foreach ($recommendations as $article) {
@@ -50,8 +50,15 @@ get_header();
                       }
                       echo "</ul>";
                   }
-
-                  $company->getOtherCoverage();
+                  
+                  if ($news = $company->getArticles('news')) {
+                      echo "<br /><br /><h3>Other Coverage</h3><hr />";
+                      echo '<ul class="list-group">';
+                      foreach ($news as $article) {
+                          echo "<li class='list-group-item'><a href='{$article->getLink()}'>{$article->getTitle()} ({$article->getDisplayTicker()})</a></li>";
+                      }
+                      echo "</ul>";
+                  }
                   echo "</div>";
               }
           }
