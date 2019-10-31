@@ -96,38 +96,32 @@ class Site
         $types = get_terms([
             'taxonomy' => 'article-type',
             'hide_empty' => false,
-        ]);
-
-        ?>
+        ]); ?>
             <select name="article-type" id="article-type" class="postbox">
-                <?
+                <?php
                     foreach ($types as $type) {
                         $selected = $type->slug === $article->getArticleType() ? 'selected' : '';
                         echo "<option value='{$type->slug}' {$selected}>{$type->name}</option>";
-                    }
-                ?>
+                    } ?>
             </select>
-        <?
+        <?php
     }
 
     public function articleTickerBoxHtml($post): void
     {
         $article = new Article($post);
         $api = new FinancialModelingApi();
-        $companies = $api->getCompanyList();
-
-        ?>
+        $companies = $api->getCompanyList(); ?>
             <select name="article-ticker" id="article-ticker" class="postbox">
-                <?
+                <?php
                     foreach ($companies as $ticker) {
                         $symbol = $ticker->symbol;
                         $value = strtolower($ticker->symbol);
                         $selected = $value === $article->getArticleTicker() ? 'selected' : '';
                         echo "<option value='{$value}' {$selected}>{$symbol} ({$ticker->name})</option>";
-                    }
-                ?>
+                    } ?>
             </select>
-        <?
+        <?php
     }
 
     public function addArticleMetaBoxes(): void
