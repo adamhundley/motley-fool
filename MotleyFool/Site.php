@@ -2,6 +2,7 @@
 namespace MotleyFool;
 
 use stdClass;
+use MotleyFool\FinancialModelingApi;
 
 class Site
 {
@@ -112,28 +113,17 @@ class Site
 
     function articleTickerBoxHtml($post)
     {
-        $api_url = "https://financialmodelingprep.com/api/v3/company/stock/list";
-        $response = wp_remote_get($api_url);
+        $article = new Article($post);
+        $api = new FinancialModelingApi();
+        $companies = $api->getCompanyList();
 
-        $response_code = wp_remote_retrieve_response_code($response);
-        if ($response_code === 200) {
-            $tickers = json_decode(wp_remote_retrieve_body($response))->symbolsList;
-        } else {
-            throw new Exception("");
-        }
-
-        $term_slug = '';
-        $terms = get_the_terms($post, 'article-ticker');
-        if (isset($terms[0])) {
-            $term_slug = $terms[0]->slug;
-        }
         ?>
             <select name="article-ticker" id="article-ticker" class="postbox">
                 <?
-                    foreach ($tickers as $ticker) {
+                    foreach ($companies as $ticker) {
                         $symbol = $ticker->symbol;
                         $value = strtolower($ticker->symbol);
-                        $selected = $value === $term_slug ? 'selected' : '';
+                        $selected = $value === $article->getArticleTicker() ? 'selected' : '';
                         echo "<option value='{$value}' {$selected}>{$symbol} ({$ticker->name})</option>";
                     }
                 ?>

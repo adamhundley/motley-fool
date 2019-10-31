@@ -25,9 +25,9 @@ get_header();
           $term = get_queried_object();
           if ($term) {
               $ticker = new ArticleTicker($term);
-              $api = new FinancialModelingApi($ticker->getSlug());
+              $api = new FinancialModelingApi();
 
-              if ($company = $api->getCompany()) {
+              if ($company = $api->getCompany($ticker->getSlug())) {
                   echo "<nav class='col-sm-3 p-4 col bg-light'>";
                   echo "<h4>{$company->getSymbol()}({$company->getExchange()})</h4>";
                   echo "<h6>Price - {$company->getPrice()}</h6>";
@@ -51,13 +51,15 @@ get_header();
                       echo "</ul>";
                   }
 
-                  if ($news = $company->getArticles('news')) {
+                  if ($news = $company->getArticles('news', 10)) {
                       echo "<br /><br /><h3>Other Coverage</h3><hr />";
                       echo '<ul class="list-group">';
                       foreach ($news as $article) {
                           echo "<li class='list-group-item'><a href='{$article->getLink()}'>{$article->getTitle()} ({$article->getDisplayTicker()})</a></li>";
                       }
                       echo "</ul>";
+                      next_posts_link('Older Articles', $postslist->max_num_pages);
+                      previous_posts_link('More Articles &raquo;');
                   }
                   echo "</div>";
               }

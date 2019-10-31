@@ -25,8 +25,8 @@ get_header();
 
         echo "<div class='row'>";
         if ($article->getArticleType() === 'stock-recommendations' && $article_ticker) {
-            $api = new FinancialModelingApi($article_ticker);
-            if ($company = $api->getCompany()) {
+            $api = new FinancialModelingApi();
+            if ($company = $api->getCompany($article_ticker)) {
                 echo "<nav class='col-sm-3 p-4 col bg-light'>";
                 echo "<div class='text-center'><img src='{$company->getLogo()}' class='img-thumbnail rounded' alt='{$company->getName()} Logo' /><hr /></div>";
                 echo "<h4><a href='{$company->getSlug()}'>{$company->getName()}</a></h4>";

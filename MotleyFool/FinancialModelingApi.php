@@ -6,15 +6,13 @@ use MotleyFool\Company;
 
 class FinancialModelingApi
 {
-    const BASE_URL = 'https://financialmodelingprep.com/api/v3/company/profile/';
+    const BASE_URL = 'https://financialmodelingprep.com/api/v3/company/';
     private $ticker;
+    private $url;
     private $response;
 
-    public function __construct($ticker)
+    public function __construct()
     {
-        $this->ticker = strtolower($ticker);
-        $this->url = self::BASE_URL . $this->ticker;
-        $this->response = $this->getResponse();
     }
 
     public function getResponse(): array
@@ -32,10 +30,24 @@ class FinancialModelingApi
         return wp_remote_retrieve_response_code($this->response);
     }
 
-    public function getCompany(): ?object
+    public function getCompany($ticker): ?object
     {
+        $this->ticker = strtolower($ticker);
+        $this->url = self::BASE_URL . "profile/$this->ticker";
+        $this->response = $this->getResponse();
         if ($this->getResponseCode() == 200) {
             return new Company($this->getBody());
+        }
+
+        return null;
+    }
+
+    public function getCompanyList(): ?array
+    {
+        $this->url = self::BASE_URL . 'stock/list';
+        $this->response = $this->getResponse();
+        if ($this->getResponseCode() == 200) {
+            return $this->getBody()->symbolsList;
         }
 
         return null;
