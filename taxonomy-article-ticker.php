@@ -29,7 +29,7 @@ get_header();
 
               if ($company = $api->getCompany($ticker->getSlug())) {
                   echo "<nav class='col-sm-3 p-4 col bg-light'>";
-                  echo "<h4>{$company->getSymbol()}({$company->getExchange()})</h4>";
+                  echo "<h4><a href='{$company->getSlug()}'>{$company->getSymbol()}({$company->getExchange()})</a></h4>";
                   echo "<h6>Price - {$company->getPrice()}</h6>";
                   echo "<h6>Changes - {$company->getChanges()}</h5>";
                   echo "<h6>Beta - {$company->getBeta()}</h6>";
