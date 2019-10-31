@@ -22,7 +22,7 @@ class ArticleType
         return $this->term->slug;
     }
 
-    public function getArticles(string $type = ''): array
+    public function getArticles(): array
     {
         $article_objects = [];
         $articles = get_posts([

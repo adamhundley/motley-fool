@@ -90,7 +90,7 @@ class Site
         }
     }
 
-    function articleTypeBoxHtml($post)
+    public function articleTypeBoxHtml($post): void
     {
         $article = new Article($post);
         $types = get_terms([
@@ -110,7 +110,7 @@ class Site
         <?
     }
 
-    function articleTickerBoxHtml($post)
+    public function articleTickerBoxHtml($post): void
     {
         $article = new Article($post);
         $api = new FinancialModelingApi();
