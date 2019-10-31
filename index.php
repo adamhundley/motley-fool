@@ -13,6 +13,7 @@ get_header();
     <main id="main" class="article-wrapper container-fluid">
       <div class="col">
         <h1>All Articles</h1>
+        <hr />
         <?php
           $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
           $args = [
