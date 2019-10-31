@@ -99,7 +99,7 @@ class Site
         ]);
 
         ?>
-            <select name="article_type" id="article_ticker" class="postbox">
+            <select name="article-type" id="article-type" class="postbox">
                 <?
                     foreach ($types as $type) {
                         $selected = $type->slug === $article->getArticleType() ? 'selected' : '';
@@ -128,7 +128,7 @@ class Site
             $term_slug = $terms[0]->slug;
         }
         ?>
-            <select name="article_ticker" id="article_ticker" class="postbox">
+            <select name="article-ticker" id="article-ticker" class="postbox">
                 <?
                     foreach ($tickers as $ticker) {
                         $symbol = $ticker->symbol;
@@ -160,34 +160,31 @@ class Site
         wp_insert_term('Stock Recommendations', 'article-type');
     }
 
-    public function saveArticleTerm($post_id, $value, $term): void
+    public static function saveArticleTerm($post_id, $term, $taxonomy): void
     {
         wp_set_object_terms(
             $post_id,
-            $article_ticker,
-            $term->slug
+            $term,
+            $taxonomy
         );
     }
 
     public function saveArticleTerms($post_id): void
     {
-        $article_ticker = $_POST['article_ticker'] ?? '';
-        $article_type = $_POST['article_type'] ?? '';
+        $article_ticker = $_POST['article-ticker'] ?? '';
+        $article_type = $_POST['article-type'] ?? '';
 
         if ($article_ticker) {
             $term = get_term_by('slug', $article_ticker);
             if (!$term) {
                 wp_insert_term($article_ticker, 'article-ticker');
             }
-            if ($term = get_term_by('slug', $article_ticker)) {
-                $this->saveArticleTerm($post_id, $article_ticker, $term);
-            }
+
+            self::saveArticleTerm($post_id, $article_ticker, 'article-ticker');
         }
 
         if ($article_type) {
-            if ($term = get_term_by('slug', $article_type)) {
-                $this->saveArticleTerm($post_id, $article_ticker, $term);
-            }
+            self::saveArticleTerm($post_id, $article_type, 'article-type');
         }
     }
 }
