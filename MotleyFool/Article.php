@@ -1,14 +1,9 @@
 <?php
 namespace MotleyFool;
 
-use stdClass;
-
 class Article
 {
-    /**
-     * @var stdClass
-     */
-    private $article;
+    private $post;
 
     public function __construct($post)
     {

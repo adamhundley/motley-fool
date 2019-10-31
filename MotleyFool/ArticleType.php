@@ -1,15 +1,11 @@
 <?php
 namespace MotleyFool;
 
-use stdClass;
 use MotleyFool\Article;
 
 class ArticleType
 {
-    /**
-     * @var stdClass
-     */
-    private $data;
+    private $term;
 
     public function __construct($term)
     {

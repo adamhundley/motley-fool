@@ -1,7 +1,6 @@
 <?php
 namespace MotleyFool;
 
-use stdClass;
 use MotleyFool\Company;
 
 class FinancialModelingApi

@@ -1,14 +1,10 @@
 <?php
 namespace MotleyFool;
 
-use stdClass;
 use MotleyFool\Article;
 
 class Company
 {
-    /**
-     * @var stdClass
-     */
     private $company;
 
     public function __construct($company)

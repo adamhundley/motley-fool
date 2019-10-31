@@ -1,13 +1,8 @@
 <?php
 namespace MotleyFool;
 
-use stdClass;
-
 class ArticleTicker
 {
-    /**
-     * @var stdClass
-     */
     private $term;
 
     public function __construct($term)

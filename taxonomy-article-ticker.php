@@ -50,7 +50,7 @@ get_header();
                       }
                       echo "</ul>";
                   }
-                  
+  
                   if ($news = $company->getArticles('news')) {
                       echo "<br /><br /><h3>Other Coverage</h3><hr />";
                       echo '<ul class="list-group">';
